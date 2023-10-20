@@ -9,8 +9,9 @@ from selenium.common.exceptions import NoSuchElementException
 import re
 from datetime import datetime
 from selenium.common.exceptions import TimeoutException
-
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support import expected_conditions as EC
 
 
 
@@ -109,16 +110,29 @@ def get_all_infor(url):
     try:
         
         driver.set_page_load_timeout(10)
+        # wait = WebDriverWait(driver, 20)
         driver.get(url)
+        
+        
+        # wait.until(EC.presence_of_element_located((By.ID, 'content')))
+        # print(driver.find_element(By.XPATH, "//div[@class ='re__main-content']"))
+        
+        # time.sleep(10)
 
     except TimeoutException as ex:
-        isrunning = 0
-        f = open("log.txt", "a")
-        f.write("Exception has been thrown. " + str(url))
-        f.write('\n')
-        f.close()
-        driver.close()
-        return dict_infor
+        driver.execute_script("window.stop();")
+        try:
+            get_title = driver.find_element(By.XPATH, "//h1[@class ='re__pr-title pr-title js__pr-title']")
+        except NoSuchElementException:
+            
+            isrunning = 0
+            f = open("log.txt", "a")
+            f.write("Exception has been thrown. " + str(url))
+            f.write('\n')
+            f.close()
+            driver.close()
+            return dict_infor
+    dict_infor['title'] = get_title.text
     time.sleep(5)
 
     get_title = driver.find_element(By.XPATH, "//h1[@class ='re__pr-title pr-title js__pr-title']")
