@@ -1,0 +1,15 @@
+.fakeimg {
+    height: 200px;
+    background: #aaa;
+  }
+
+.carousel-inner {
+  height: 200px;
+}
+#right-panel-link {
+  position: absolute;
+  margin-top: 15px;
+  right: 396px;
+}
+
+
