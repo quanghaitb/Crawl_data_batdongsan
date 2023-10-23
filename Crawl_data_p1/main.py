@@ -9,7 +9,7 @@ from collect_data_from_web import *
 from decimal import Decimal
 
 
-# insert_all_link_new()
+insert_all_link_new()
 
 all_news = select_all_rows_data('news', status = 0)
 for row in all_news:

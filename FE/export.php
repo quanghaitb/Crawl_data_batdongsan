@@ -28,7 +28,20 @@ function name_file(){
 
 function export_all() {
     $limit = $_POST['limit'];
-    $result         =   display_data_limit($limit);
+    $date_from = $_POST['date_from'];
+    $date_to = $_POST['date_to'];
+    $result = NULL;
+    if ($_POST['date_from']){
+        $date_from = $_POST['date_from'];
+        $date_to = $_POST['date_to'];
+        
+        $result = display_data_filter_by_date($date_from,$date_to, $limit) ; 
+    }
+    else {
+        
+        $result         =   display_data_limit($limit);
+    }
+    
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setTitle("BAT_DONG_SAN_EXPORT");
@@ -98,8 +111,7 @@ function export_all() {
 
 
 function export_filter_fields($fields){
-
-    
+    // echo $fields;
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->setTitle("BAT_DONG_SAN_EXPORT");
@@ -146,11 +158,19 @@ function export_filter_fields($fields){
     $count_fields = count($fields);
     
     $limit = $_POST['limit'];
+    // echo $limit;
+    $result  = NULL;
+    if ($limit == 'all'){
+        $result = display_data_no_limit();
+    }
+    else {
+        $result   =   display_data_limit($limit);
+    }
+    
     $date_from = $_POST['date_from'];
     $date_to = $_POST['date_to'];
-    $result         =   display_data_limit($limit);
 
-    if (isset($_POST['date_from'])){
+    if ($_POST['date_from']){
         $date_from = $_POST['date_from'];
         $date_to = $_POST['date_to'];
         $result = display_data_filter_by_date($date_from,$date_to, $limit) ; 
@@ -186,6 +206,7 @@ if (isset($_POST['all_fields'])){
     
     $fields = $_POST['field'];
     export_all();
+    
     
 } else {
     $fields = $_POST['field'];

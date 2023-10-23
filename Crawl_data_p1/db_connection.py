@@ -32,7 +32,7 @@ def get_news_by_day(date_from, date_to):
   
 
 def get_all_provinces():
-  query = "SELECT * FROM provinces where id = 3 limit 1"
+  query = "SELECT * FROM provinces"
   conn.execute(query)
   rows = conn.fetchall()
   return rows
